@@ -10,16 +10,16 @@
                     <div class="app-auth-branding mb-4"><a class="app-logo" href="{{ route('auth.login')}}"><img class="logo-icon me-2" src="{{ asset('admin/assets/images/app-logo.svg')}}" alt="logo"></a></div>
                     <h2 class="auth-heading text-center mb-5">Log in</h2>
                     <div class="auth-form-container text-start">
-                        <form class="auth-form login-form" action=" {{ route('auth.getLogin')}}">
+                        <form class="auth-form login-form" action="{{ route('auth.getLogin')}}">
                             @csrf
                             <div class="email mb-3">
                                 <label class="" for="email">Email</label>
-                                <input id="email" name="email" type="email" class="form-control signin-email @error('email') is-invalid @enderror" placeholder="Email address" required >
+                                <input id="email" name="email" type="email" class="form-control signin-email @error('email') is-invalid @enderror" autocomplete="off" placeholder="Email address" required >
                                 @error('email')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div><!--//form-group-->
                             <div class="password mb-3">
                                 <label class="" for="password">Password</label>

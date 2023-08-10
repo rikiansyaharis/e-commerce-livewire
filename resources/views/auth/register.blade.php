@@ -12,7 +12,7 @@
                         <form class="auth-form login-form" action="{{ route('auth.getRegister')}}">
                             <div class="email mb-2">
                                 <label class="" for="email">Name <span class="text-danger">*</span></label>
-                                <input id="name" name="name" type="text" class="form-control @error('name') is-invalid @enderror signin-email" placeholder="Username"  value="{{ old('name')}}">
+                                <input id="name" name="name" type="text" class="form-control @error('name') is-invalid @enderror signin-email" autocomplete="off" placeholder="Username"  value="{{ old('name')}}">
                                 @error('name')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -21,7 +21,7 @@
                             </div><!--//form-group-->
                             <div class="email mb-2">
                                 <label class="" for="email">Email <span class="text-danger">*</span></label>
-                                <input id="email" name="email" type="email" class="form-control @error('email') is-invalid @enderror signin-email" placeholder="Email address"  value="{{ old('email')}}">
+                                <input id="email" name="email" type="email" class="form-control @error('email') is-invalid @enderror signin-email" autocomplete="off" placeholder="Email address"  value="{{ old('email')}}">
                                 @error('email')
                                     <div class="invalid-feedback">
                                         {{ $message }}

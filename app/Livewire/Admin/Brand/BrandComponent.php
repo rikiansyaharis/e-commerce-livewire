@@ -5,96 +5,100 @@ namespace App\Livewire\Admin\Brand;
 use App\Models\Brand;
 use Livewire\Component;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Livewire\WithPagination;
 use Livewire\Attributes\Rule;
-
+use \Cviebrock\EloquentSluggable\Services\SlugService;
 
 class BrandComponent extends Component
 {
 
-    public $postId;
+    use WithPagination;
 
-    public $isOpen = 0;
 
     #[Rule('required|min:3')]
     public $name;
 
-    #[Rule('required|min:3')]
     public $slug;
 
-    #[Rule('nullable')]
-    public $status;
+    public $search = '';
+    public $brand_id;
+    public $updateMode = false;
+
+    public function generateSlug()
+    {
+        $this->slug = SlugService::createSlug(Brand::class, 'slug', $this->name);
+    }
 
     public function render()
     {
         $data = [
             'title' => 'Brand',
-            'data' => Brand::all(),
+            'data' => Brand::latest()->where('name','Like','%'. $this->search .'%')->paginate(10),
         ];
         return view('livewire.admin.brand.brand-component', $data)->extends('components.layouts.main')->section('content-wrapper');
     }
 
-    public function create()
+    private function resetInputFields()
     {
-        $this->openModal();
-    }
-    public function openModal()
-    {
-        $this->resetValidation();
-
-        $this->isOpen = true;
-    }
-    public function closeModal()
-    {
-        $this->isOpen = false;
+        $this->name = '';
+        $this->slug = '';
     }
 
-    public function store()
+    public function create(Request $request)
     {
-        $this->validate();
+        $validateData = $this->validate([
+            'name' => 'required',
+        ]);
 
         Brand::create([
             'name' => $this->name,
-            'slug' => Str::slug($this->slug),
-            'status' => $this->status == true ? '1':'0',
+            'slug' => Str::slug($this->slug)
         ]);
 
-        session()->flash('success', 'Post created successfully.');
-
-        $this->reset('name','slug', 'status');
-        $this->closeModal();
+        session()->flash('success', 'Brand created successfully!');
+        $this->resetInputFields();
     }
 
     public function edit($id)
     {
-        $post = Brand::findOrFail($id);
-        $this->postId = $id;
-        $this->name = $post->name;
-        $this->slug = Str::slug($this->slug);
-        $this->status = $this->status == true ? '1':'0';
+        $this->updateMode = true;
+        $data = Brand::where('id',$id)->first();
+        $this->brand_id = $id;
+        $this->name = $data->name;
 
-        $this->openModal();
     }
 
     public function update()
     {
-        if ($this->postId) {
-            $post = Brand::findOrFail($this->postId);
-            $post->update([
+        $validatedData = $this->validate([
+            'name' => 'required',
+        ]);
+
+        if ($this->brand_id) {
+            $data = Brand::find($this->brand_id);
+            $data->update([
                 'name' => $this->name,
-                'slug' => $this->slug,
-                'status' => $this->status == true ? '1':'0',
+                'slug' => Str::slug($this->slug),
             ]);
-            session()->flash('success', 'Post updated successfully.');
-            $this->closeModal();
-            $this->reset('name', 'slug','status', 'postId');
+            $this->updateMode = false;
+            session()->flash('success', 'Brand updated successfully!.');
+            $this->resetInputFields();
+
         }
+    }
+
+    public function cancel()
+    {
+        $this->updateMode = false;
+        $this->resetInputFields();
     }
 
     public function delete($id)
     {
-        Brand::find($id)->delete();
-        session()->flash('success', 'Post deleted successfully.');
-        $this->reset('name','slug', 'status');
+        if($id){
+            Brand::where('id',$id)->delete();
+            session()->flash('success', 'Users Deleted Successfully.');
+        }
     }
-
 }

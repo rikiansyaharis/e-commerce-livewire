@@ -16,15 +16,45 @@ class BrandSeeder extends Seeder
     {
         Brand::insert([
             [
-                'name' =>  'Samsung',
-                'slug' => 'samsung',
-                'status' => 1
+                'id' => 101,
+                'name' => 'Apple',
+                'slug' => 'apple'
             ],
             [
-                'name' =>  'Xiaomi',
-                'slug' => 'xiaomi',
-                'status' => 0
+                'id' => 102,
+                'name' => 'Infinix',
+                'slug' => 'infinix'
             ],
+            [
+                'id' => 103,
+                'name' => 'OnePlus',
+                'slug' => 'oneplus'
+            ],
+            [
+                'id' => 104,
+                'name' => 'Oppo',
+                'slug' => 'oppo'
+            ],
+            [
+                'id' => 105,
+                'name' => 'Realme',
+                'slug' => 'realme'
+            ],
+            [
+                'id' => 106,
+                'name' => 'Samsung',
+                'slug' => 'samsung'
+            ],
+            [
+                'id' => 107,
+                'name' => 'Vivo',
+                'slug' => 'vivo'
+            ],
+            [
+                'id' => 108,
+                'name' => 'Xiaomi',
+                'slug' => 'xiaomi'
+            ]
         ]);
     }
 }

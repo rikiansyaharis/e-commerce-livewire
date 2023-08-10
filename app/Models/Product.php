@@ -6,18 +6,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 
-class Brand extends Model
+class Product extends Model
 {
     use HasFactory, Sluggable;
 
-    // protected $table = "brand";
-
     protected $guarded = [];
 
-    // public function products()
-    // {
-    //     return $this->hasMany(Product::class);
-    // }
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
 
     public function sluggable(): array
     {
@@ -28,4 +26,3 @@ class Brand extends Model
         ];
     }
 }
-

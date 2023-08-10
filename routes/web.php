@@ -5,8 +5,9 @@ use App\Livewire\Admin\Brand\BrandComponent;
 use App\Http\Controllers\Auth\AuthController;
 
 
-use App\Livewire\Admin\Category\CategoryComponent;
+use App\Livewire\Admin\Product\ProductComponent;
 use App\Livewire\Admin\Dashboard\DashboardComponent;
+use App\Livewire\Admin\Product\CreateProductComponent;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,14 +33,18 @@ Route::prefix('auth')->group(function() {
     Route::get('/logout',[AuthController::class, 'logout'])->name('auth.logout');
 });
 
-Route::prefix('apps')->middleware('auth')->group(function() {
+Route::prefix('apps')->middleware('auth.admin','auth')->group(function() {
     Route::get('/dashboard', DashboardComponent::class)->name('apps.dashboard');
 
     Route::prefix('brand')->group(function() {
         Route::get('/brands', BrandComponent::class)->name('brand.brands');
     });
 
-    Route::prefix('category')->group(function() {
-        Route::get('/categories', CategoryComponent::class)->name('category.categories');
+    Route::prefix('product')->group(function() {
+        Route::get('/product', ProductComponent::class)->name('product.products');
+        Route::get('/create', CreateProductComponent::class)->name('product.addProducts');
     });
+
+
+
 });
